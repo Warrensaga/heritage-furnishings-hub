@@ -10,6 +10,7 @@ export const Route = createFileRoute("/admin/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,11 +18,33 @@ function LoginPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) { toast.error(error.message); return; }
-    toast.success("Welcome back!");
-    navigate({ to: "/admin" });
+    try {
+      if (mode === "signin") {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        toast.success("Welcome back!");
+        navigate({ to: "/admin" });
+      } else {
+        if (password.length < 6) throw new Error("Password must be at least 6 characters.");
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: `${window.location.origin}/admin` },
+        });
+        if (error) throw error;
+        if (data.session) {
+          toast.success("Account created — you're signed in.");
+          navigate({ to: "/admin" });
+        } else {
+          toast.success("Account created. Check your email to confirm, then sign in.");
+          setMode("signin");
+        }
+      }
+    } catch (err: any) {
+      toast.error(err?.message ?? "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -31,14 +54,21 @@ function LoginPage() {
           <div className="font-display font-bold text-espresso text-xl">MANDELA HERITAGE</div>
           <div className="text-[10px] tracking-[0.3em] text-terracotta mt-1">ADMIN PORTAL</div>
         </div>
+
+        <div className="flex bg-slate-100 rounded p-1 mb-5">
+          <button type="button" onClick={() => setMode("signin")} className={`flex-1 text-xs font-semibold py-1.5 rounded ${mode === "signin" ? "bg-white shadow-sm text-espresso" : "text-slate-500"}`}>Sign in</button>
+          <button type="button" onClick={() => setMode("signup")} className={`flex-1 text-xs font-semibold py-1.5 rounded ${mode === "signup" ? "bg-white shadow-sm text-espresso" : "text-slate-500"}`}>Sign up</button>
+        </div>
+
         <label className="block text-xs font-semibold text-slate-700">Email</label>
         <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm outline-none focus:border-terracotta" />
         <label className="block text-xs font-semibold text-slate-700 mt-4">Password</label>
-        <input required type="password" value={password} onChange={e => setPassword(e.target.value)} className="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm outline-none focus:border-terracotta" />
+        <input required type="password" minLength={6} value={password} onChange={e => setPassword(e.target.value)} className="mt-1 w-full border border-slate-300 rounded px-3 py-2 text-sm outline-none focus:border-terracotta" />
+        {mode === "signup" && <p className="mt-1 text-[11px] text-slate-500">At least 6 characters.</p>}
+
         <button disabled={loading} className="mt-6 w-full bg-terracotta text-white font-semibold py-2.5 rounded hover:bg-terracotta/90 disabled:opacity-50">
-          {loading ? "Signing in..." : "Sign in"}
+          {loading ? (mode === "signin" ? "Signing in..." : "Creating account...") : (mode === "signin" ? "Sign in" : "Create admin account")}
         </button>
-        <p className="mt-4 text-xs text-slate-500 text-center">Create your admin account from the Cloud users panel.</p>
       </form>
     </div>
   );
