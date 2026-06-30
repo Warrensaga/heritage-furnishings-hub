@@ -3,7 +3,17 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({ meta: [{ title: "About — Mandela Heritage Furnitures" }, { name: "description", content: "15 years of handcrafted furniture for Kenyan homes." }] }),
+  head: () => ({
+    meta: [
+      { title: "About Us — Mandela Heritage Furnitures Nairobi" },
+      { name: "description", content: "15 years of handcrafted furniture for Kenyan homes. Family workshop on the Eastern Bypass, Nairobi." },
+      { property: "og:title", content: "About Mandela Heritage Furnitures" },
+      { property: "og:description", content: "Family-run workshop crafting heirloom furniture in Nairobi for 15+ years." },
+      { property: "og:url", content: "https://kenyan-furniture-suite.lovable.app/about" },
+    ],
+    links: [{ rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/about" }],
+  }),
+
   component: () => (
     <div className="min-h-screen flex flex-col">
       <Header />
