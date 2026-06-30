@@ -18,7 +18,12 @@ function SuccessPage() {
     queryKey: ["order", id],
     queryFn: async () => {
       const { data } = await supabase.from("orders").select("*").eq("id", id).maybeSingle();
-      return data;
+      if (data) return data;
+      if (typeof window !== "undefined") {
+        const cached = sessionStorage.getItem(`order:${id}`);
+        if (cached) return JSON.parse(cached);
+      }
+      return null;
     },
   });
 
