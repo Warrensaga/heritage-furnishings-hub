@@ -17,10 +17,15 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Mandela Heritage Furnitures — Premium Furniture in Nairobi" },
       { name: "description", content: "Shop sofas, dining sets, beds, office & outdoor furniture. Free delivery in Nairobi over KSh 30,000. M-Pesa accepted." },
+      { property: "og:title", content: "Mandela Heritage Furnitures — Premium Furniture in Nairobi" },
+      { property: "og:description", content: "Shop sofas, dining sets, beds, office & outdoor furniture. Free delivery in Nairobi over KSh 30,000." },
+      { property: "og:url", content: "https://kenyan-furniture-suite.lovable.app/" },
     ],
+    links: [{ rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/" }],
   }),
   component: Home,
 });
+
 
 function Home() {
   const { data: categories = [] } = useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
