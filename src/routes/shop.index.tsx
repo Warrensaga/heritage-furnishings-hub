@@ -18,7 +18,17 @@ export const Route = createFileRoute("/shop/")({
     max: typeof s.max === "number" ? s.max : undefined,
     page: typeof s.page === "number" ? s.page : undefined,
   }),
-  head: () => ({ meta: [{ title: "Shop — Mandela Heritage Furnitures" }, { name: "description", content: "Browse our complete catalogue of premium furniture." }] }),
+  head: () => ({
+    meta: [
+      { title: "Shop Furniture Online — Mandela Heritage Nairobi" },
+      { name: "description", content: "Browse our complete catalogue of premium sofas, beds, dining sets, office and outdoor furniture. Free delivery in Nairobi." },
+      { property: "og:title", content: "Shop Furniture — Mandela Heritage" },
+      { property: "og:description", content: "Browse our complete furniture catalogue." },
+      { property: "og:url", content: "https://kenyan-furniture-suite.lovable.app/shop" },
+    ],
+    links: [{ rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/shop" }],
+  }),
+
   component: ShopPage,
 });
 

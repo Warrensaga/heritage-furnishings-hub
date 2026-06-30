@@ -3,7 +3,17 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
 export const Route = createFileRoute("/delivery")({
-  head: () => ({ meta: [{ title: "Delivery — Mandela Heritage" }, { name: "description", content: "Delivery zones, timelines, free delivery threshold." }] }),
+  head: () => ({
+    meta: [
+      { title: "Delivery Information — Mandela Heritage Nairobi" },
+      { name: "description", content: "Delivery zones, timelines, and the free-delivery threshold for furniture orders across Nairobi and beyond." },
+      { property: "og:title", content: "Furniture Delivery — Mandela Heritage" },
+      { property: "og:description", content: "Free delivery in Nairobi over KSh 30,000. Country-wide delivery available." },
+      { property: "og:url", content: "https://kenyan-furniture-suite.lovable.app/delivery" },
+    ],
+    links: [{ rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/delivery" }],
+  }),
+
   component: () => (
     <div className="min-h-screen flex flex-col">
       <Header />

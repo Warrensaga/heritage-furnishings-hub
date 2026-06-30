@@ -16,13 +16,51 @@ export const Route = createFileRoute("/shop/$slug")({
     if (!product) throw notFound();
     return product;
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: loaderData ? `${loaderData.name} — Mandela Heritage` : "Product" },
-      { name: "description", content: loaderData?.description?.slice(0, 160) ?? "" },
-      { property: "og:image", content: loaderData?.image_urls?.[0] ?? "" },
-    ],
-  }),
+  head: ({ loaderData, params }) => {
+    const url = `https://kenyan-furniture-suite.lovable.app/shop/${params.slug}`;
+    const desc = loaderData?.description?.slice(0, 160) ?? `${loaderData?.name} — premium furniture from Mandela Heritage, Nairobi.`;
+    const image = loaderData?.image_urls?.[0] ?? "";
+    return {
+      meta: [
+        { title: loaderData ? `${loaderData.name} — Mandela Heritage` : "Product" },
+        { name: "description", content: desc },
+        { property: "og:title", content: loaderData?.name ?? "Product" },
+        { property: "og:description", content: desc },
+        { property: "og:type", content: "product" },
+        { property: "og:url", content: url },
+        ...(image ? [{ property: "og:image", content: image }, { name: "twitter:image", content: image }] : []),
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: loaderData
+        ? [
+            {
+              type: "application/ld+json",
+              children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Product",
+                name: loaderData.name,
+                description: loaderData.description ?? undefined,
+                image: loaderData.image_urls ?? undefined,
+                sku: loaderData.id,
+                offers: {
+                  "@type": "Offer",
+                  url,
+                  priceCurrency: "KES",
+                  price: loaderData.price,
+                  availability:
+                    loaderData.stock_status === "in_stock"
+                      ? "https://schema.org/InStock"
+                      : loaderData.stock_status === "out_of_stock"
+                        ? "https://schema.org/OutOfStock"
+                        : "https://schema.org/PreOrder",
+                },
+              }),
+            },
+          ]
+        : [],
+    };
+  },
+
   errorComponent: ({ error }) => <div className="p-10 text-center">{error.message}</div>,
   notFoundComponent: () => <div className="p-10 text-center">Product not found. <Link to="/shop" className="text-terracotta underline">Back to shop</Link></div>,
   component: ProductPage,

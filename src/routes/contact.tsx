@@ -7,7 +7,17 @@ import { BUSINESS_ADDRESS, BUSINESS_EMAIL, WHATSAPP_NUMBER, whatsappUrl } from "
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({ meta: [{ title: "Contact — Mandela Heritage" }, { name: "description", content: "Visit our showroom or chat on WhatsApp." }] }),
+  head: () => ({
+    meta: [
+      { title: "Contact & Showroom — Mandela Heritage Furnitures" },
+      { name: "description", content: "Visit our showroom on Eastern Bypass, Mihango, Nairobi. Call or chat with us on WhatsApp." },
+      { property: "og:title", content: "Contact Mandela Heritage Furnitures" },
+      { property: "og:description", content: "Visit our showroom or chat on WhatsApp." },
+      { property: "og:url", content: "https://kenyan-furniture-suite.lovable.app/contact" },
+    ],
+    links: [{ rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/contact" }],
+  }),
+
   component: ContactPage,
 });
 
