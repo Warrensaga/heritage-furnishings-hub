@@ -39,10 +39,12 @@ function ProductPage() {
   const category = categories.find(c => c.id === product.category_id);
   const related = allProducts.filter(p => p.category_id === product.category_id && p.id !== product.id).slice(0, 4);
   const onSale = product.original_price && product.original_price > product.price;
-  const images = product.image_urls.length ? product.image_urls : ["https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900"];
+  const images: string[] = product.image_urls.length ? product.image_urls : ["https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900"];
 
-  const stockLabel = { in_stock: "In Stock", out_of_stock: "Out of Stock", made_to_order: "Made to Order" }[product.stock_status];
-  const stockColor = { in_stock: "bg-forest text-white", out_of_stock: "bg-destructive text-destructive-foreground", made_to_order: "bg-gold text-espresso" }[product.stock_status];
+  const stockLabels: Record<string, string> = { in_stock: "In Stock", out_of_stock: "Out of Stock", made_to_order: "Made to Order" };
+  const stockColors: Record<string, string> = { in_stock: "bg-forest text-white", out_of_stock: "bg-destructive text-destructive-foreground", made_to_order: "bg-gold text-espresso" };
+  const stockLabel = stockLabels[product.stock_status];
+  const stockColor = stockColors[product.stock_status];
 
   return (
     <div className="min-h-screen flex flex-col">
