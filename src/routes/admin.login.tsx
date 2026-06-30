@@ -44,7 +44,6 @@ function LoginPage() {
         navigate({ to: "/admin" });
       } else if (mode === "signup") {
         if (password.length < 8) throw new Error("Password must be at least 8 characters.");
-        if (!inviteCode.trim()) throw new Error("Invite code is required.");
         const result = await signUpFn({ data: { email, password, inviteCode: inviteCode.trim() } });
         if (!result.ok) throw new Error(result.error);
         const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
