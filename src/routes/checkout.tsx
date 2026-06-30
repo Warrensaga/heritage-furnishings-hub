@@ -35,7 +35,9 @@ function CheckoutPage() {
 
     setSubmitting(true);
     try {
+      const id = (crypto as any).randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
       const payload = {
+        id,
         customer_name: parsed.data.customer_name,
         phone: parsed.data.phone,
         email: parsed.data.email || null,
@@ -44,10 +46,14 @@ function CheckoutPage() {
         total: subtotal,
         items: items.map(i => ({ id: i.id, slug: i.slug, name: i.name, price: i.price, qty: i.qty })),
       };
-      const { data, error } = await supabase.from("orders").insert(payload).select("id").single();
+      const { error } = await supabase.from("orders").insert(payload);
       if (error) throw error;
+      // Cache for the success page (anon cannot SELECT orders).
+      try {
+        sessionStorage.setItem(`order:${id}`, JSON.stringify({ ...payload, created_at: new Date().toISOString(), status: "new" }));
+      } catch {}
       clear();
-      navigate({ to: "/checkout/success/$id", params: { id: data.id } });
+      navigate({ to: "/checkout/success/$id", params: { id } });
     } catch (err: any) {
       console.error(err);
       toast.error("Could not place order. Please try again.");
