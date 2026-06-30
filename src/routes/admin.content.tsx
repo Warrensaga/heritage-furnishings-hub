@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchSiteContent, fetchProducts } from "@/lib/db";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/admin/content")({ component: ContentAdmin });
+export const Route = createFileRoute("/admin/content")({ component: ContentAdmin, head: () => ({ meta: [{ name: "robots", content: "noindex" }] }) });
 
 type Slide = { category: string; headline: string; subtext: string; image: string; cta_link: string };
 

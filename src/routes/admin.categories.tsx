@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchCategories, fetchProducts, type Category } from "@/lib/db";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/admin/categories")({ component: CategoriesAdmin });
+export const Route = createFileRoute("/admin/categories")({ component: CategoriesAdmin, head: () => ({ meta: [{ name: "robots", content: "noindex" }] }) });
 
 function slugify(s: string) { return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-"); }
 
