@@ -60,6 +60,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Mandela Heritage Furnitures" },
       { property: "og:description", content: "Premium furniture showroom on Eastern Bypass, Nairobi." },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Mandela Heritage Furnitures" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -68,6 +69,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Lato:wght@300;400;700;900&display=swap" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FurnitureStore",
+          name: "Mandela Heritage Furnitures",
+          url: "https://kenyan-furniture-suite.lovable.app",
+          description: "Premium handcrafted furniture showroom on Eastern Bypass, Nairobi.",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Eastern Bypass, Mihango",
+            addressLocality: "Nairobi",
+            addressCountry: "KE",
+          },
+          openingHours: ["Mo-Sa 08:00-18:00", "Su 10:00-16:00"],
+        }),
+      },
+    ],
+
   }),
   shellComponent: RootShell,
   component: RootComponent,
