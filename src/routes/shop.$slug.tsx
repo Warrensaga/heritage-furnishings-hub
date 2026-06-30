@@ -106,7 +106,7 @@ function ProductPage() {
               </button>
             </div>
 
-            <a href={whatsappUrl(productEnquiryMessage(product.name, product.price, typeof window !== "undefined" ? window.location.href : undefined))} target="_blank" rel="noreferrer"
+            <a href={whatsappUrl(productEnquiryMessage(product.name, product.price))} target="_blank" rel="noreferrer"
               className="mt-3 inline-flex w-full items-center justify-center gap-2 bg-whatsapp text-white font-semibold py-3 rounded hover:bg-whatsapp/90">
               <MessageCircle className="size-4" /> Enquire on WhatsApp
             </a>
