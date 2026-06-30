@@ -13,7 +13,9 @@ export const adminSignUp = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const expected = process.env.ADMIN_INVITE_CODE;
-    if (!expected) throw new Error("Admin sign-up is not configured.");
+    if (!expected) {
+      return { ok: false as const, error: "Admin sign-up is not configured." };
+    }
 
     // Constant-time-ish compare
     const a = Buffer.from(data.inviteCode);
@@ -22,7 +24,7 @@ export const adminSignUp = createServerFn({ method: "POST" })
     const len = Math.min(a.length, b.length);
     for (let i = 0; i < len; i++) mismatch |= a[i] ^ b[i];
     if (mismatch !== 0) {
-      throw new Error("Invalid invite code");
+      return { ok: false as const, error: "Invalid invite code." };
     }
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -31,6 +33,8 @@ export const adminSignUp = createServerFn({ method: "POST" })
       password: data.password,
       email_confirm: true,
     });
-    if (error) throw new Error(error.message);
-    return { ok: true, userId: created.user?.id };
+    if (error) {
+      return { ok: false as const, error: error.message };
+    }
+    return { ok: true as const, userId: created.user?.id };
   });
