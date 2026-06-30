@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatKES, whatsappUrl } from "@/lib/format";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/admin/orders")({ component: OrdersAdmin });
+export const Route = createFileRoute("/admin/orders")({ component: OrdersAdmin, head: () => ({ meta: [{ name: "robots", content: "noindex" }] }) });
 
 const STATUSES = ["new", "contacted", "fulfilled", "cancelled"] as const;
 

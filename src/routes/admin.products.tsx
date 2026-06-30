@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/products")({
   component: ProductsAdmin,
+  head: () => ({ meta: [{ name: "robots", content: "noindex" }] }),
 });
 
 const empty = {
