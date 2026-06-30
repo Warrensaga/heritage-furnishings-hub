@@ -13,7 +13,31 @@ const FAQS = [
 ];
 
 export const Route = createFileRoute("/faq")({
-  head: () => ({ meta: [{ title: "FAQ — Mandela Heritage" }, { name: "description", content: "Delivery, returns, M-Pesa, custom orders." }] }),
+  head: () => ({
+    meta: [
+      { title: "FAQ — Mandela Heritage Furnitures" },
+      { name: "description", content: "Answers about delivery, returns, M-Pesa payment, custom orders and installation." },
+      { property: "og:title", content: "FAQ — Mandela Heritage" },
+      { property: "og:description", content: "Delivery, returns, M-Pesa and custom-order answers." },
+      { property: "og:url", content: "https://kenyan-furniture-suite.lovable.app/faq" },
+    ],
+    links: [{ rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/faq" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQS.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+    ],
+  }),
+
   component: () => (
     <div className="min-h-screen flex flex-col">
       <Header />
