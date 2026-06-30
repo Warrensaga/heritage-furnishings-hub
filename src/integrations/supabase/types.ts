@@ -14,7 +14,143 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      categories: {
+        Row: {
+          created_at: string
+          display_order: number
+          icon_url: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          icon_url?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          icon_url?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          created_at: string
+          customer_name: string
+          delivery_address: string
+          email: string | null
+          id: string
+          items: Json
+          notes: string | null
+          phone: string
+          status: string
+          total: number
+        }
+        Insert: {
+          created_at?: string
+          customer_name: string
+          delivery_address: string
+          email?: string | null
+          id?: string
+          items: Json
+          notes?: string | null
+          phone: string
+          status?: string
+          total: number
+        }
+        Update: {
+          created_at?: string
+          customer_name?: string
+          delivery_address?: string
+          email?: string | null
+          id?: string
+          items?: Json
+          notes?: string | null
+          phone?: string
+          status?: string
+          total?: number
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          badge: string | null
+          category_id: string | null
+          created_at: string
+          description: string | null
+          featured: boolean
+          id: string
+          image_urls: string[]
+          name: string
+          original_price: number | null
+          price: number
+          slug: string
+          stock_status: string
+        }
+        Insert: {
+          badge?: string | null
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          image_urls?: string[]
+          name: string
+          original_price?: number | null
+          price: number
+          slug: string
+          stock_status?: string
+        }
+        Update: {
+          badge?: string | null
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean
+          id?: string
+          image_urls?: string[]
+          name?: string
+          original_price?: number | null
+          price?: number
+          slug?: string
+          stock_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_content: {
+        Row: {
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
