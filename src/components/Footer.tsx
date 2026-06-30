@@ -56,9 +56,12 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-cream/10">
-        <div className="container-x py-4 text-xs text-cream/60 flex flex-col sm:flex-row gap-2 justify-between">
+        <div className="container-x py-4 text-xs text-cream/60 flex flex-col sm:flex-row gap-2 justify-between items-center">
           <div>© {new Date().getFullYear()} Mandela Heritage Furnitures. All rights reserved.</div>
-          <div>Made with care in Nairobi.</div>
+          <div className="flex items-center gap-4">
+            <span>Made with care in Nairobi.</span>
+            <Link to="/admin/login" className="text-cream/40 hover:text-gold">Admin</Link>
+          </div>
         </div>
       </div>
     </footer>
