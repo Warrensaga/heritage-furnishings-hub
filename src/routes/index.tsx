@@ -8,6 +8,7 @@ import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { SectionTitle } from "@/components/SectionTitle";
 import { ProductCard } from "@/components/ProductCard";
+import { Reveal } from "@/components/Reveal";
 import { fetchCategories, fetchProducts, categoryCountMap } from "@/lib/db";
 import { whatsappUrl } from "@/lib/format";
 
@@ -43,24 +44,26 @@ function Home() {
         <HeroCarousel />
 
         {/* Category grid */}
-        <section className="container-x py-10 sm:py-14">
+        <Reveal as="section" className="container-x py-10 sm:py-14">
           <SectionTitle eyebrow="BROWSE" title="Shop by Category" />
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            {categories.map(c => (
-              <Link key={c.id} to="/shop" search={{ category: c.slug } as any} className="group relative aspect-square rounded-lg overflow-hidden bg-muted">
-                <img src={c.icon_url ?? ""} alt={c.name} className="absolute inset-0 size-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/30 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 text-cream">
-                  <div className="font-display font-bold text-sm sm:text-base leading-tight">{c.name}</div>
-                  <div className="text-[10px] text-cream/70 uppercase tracking-wider mt-0.5">{counts.get(c.id) ?? 0} products</div>
-                </div>
-              </Link>
+            {categories.map((c, i) => (
+              <Reveal key={c.id} delay={i * 60} variant="scale">
+                <Link to="/shop" search={{ category: c.slug } as any} className="group relative aspect-square rounded-lg overflow-hidden bg-muted block">
+                  <img src={c.icon_url ?? ""} alt={c.name} className="absolute inset-0 size-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3 text-cream">
+                    <div className="font-display font-bold text-sm sm:text-base leading-tight">{c.name}</div>
+                    <div className="text-[10px] text-cream/70 uppercase tracking-wider mt-0.5">{counts.get(c.id) ?? 0} products</div>
+                  </div>
+                </Link>
+              </Reveal>
             ))}
           </div>
-        </section>
+        </Reveal>
 
         {/* Featured */}
-        <section className="container-x py-10 sm:py-14">
+        <Reveal as="section" className="container-x py-10 sm:py-14">
           <SectionTitle eyebrow="HANDPICKED" title="Our Best Sellers" seeAll={{ to: "/shop" }} />
           <div className="flex flex-wrap gap-2 mb-5">
             {tabs.map(t => (
@@ -70,28 +73,40 @@ function Home() {
             ))}
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
-            {filteredFeatured.slice(0, 8).map(p => <ProductCard key={p.id} product={p} categoryName={catName(p.category_id)} />)}
+            {filteredFeatured.slice(0, 8).map((p, i) => (
+              <Reveal key={p.id} delay={(i % 4) * 80}>
+                <ProductCard product={p} categoryName={catName(p.category_id)} />
+              </Reveal>
+            ))}
           </div>
-        </section>
+        </Reveal>
 
         {/* New arrivals */}
         <section className="bg-card border-y border-border py-10 sm:py-14">
-          <div className="container-x">
+          <Reveal className="container-x">
             <SectionTitle eyebrow="JUST IN" title="New Arrivals" seeAll={{ to: "/shop" }} />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
-              {newest.map(p => <ProductCard key={p.id} product={p} categoryName={catName(p.category_id)} />)}
+              {newest.map((p, i) => (
+                <Reveal key={p.id} delay={i * 80} variant="fade-up">
+                  <ProductCard product={p} categoryName={catName(p.category_id)} />
+                </Reveal>
+              ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Sale */}
         {onSale.length > 0 && (
-          <section className="container-x py-10 sm:py-14">
+          <Reveal as="section" className="container-x py-10 sm:py-14">
             <SectionTitle eyebrow="SAVE BIG" title="Special Offers" seeAll={{ to: "/shop" }} />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
-              {onSale.slice(0, 4).map(p => <ProductCard key={p.id} product={p} categoryName={catName(p.category_id)} />)}
+              {onSale.slice(0, 4).map((p, i) => (
+                <Reveal key={p.id} delay={i * 80}>
+                  <ProductCard product={p} categoryName={catName(p.category_id)} />
+                </Reveal>
+              ))}
             </div>
-          </section>
+          </Reveal>
         )}
 
         {/* Per-category rows */}
@@ -115,7 +130,7 @@ function Home() {
         {/* Brand story */}
         <section className="bg-espresso text-cream py-14">
           <div className="container-x grid md:grid-cols-2 gap-10 items-center">
-            <div>
+            <Reveal variant="slide-left">
               <div className="text-xs tracking-[0.3em] text-gold font-semibold">OUR STORY</div>
               <h2 className="font-display text-3xl sm:text-4xl font-bold mt-2">Furniture Should Tell a Story</h2>
               <p className="mt-4 text-cream/80 leading-relaxed">
@@ -127,13 +142,15 @@ function Home() {
                 <li className="flex gap-3"><span className="text-gold">✓</span> Made-to-order options for any space</li>
               </ul>
               <Link to="/about" className="inline-block mt-6 text-gold font-semibold hover:underline">Read our story →</Link>
-            </div>
-            <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=1200" alt="Workshop" className="rounded-lg aspect-[4/3] object-cover" />
+            </Reveal>
+            <Reveal variant="slide-right" delay={150}>
+              <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=1200" alt="Workshop" className="rounded-lg aspect-[4/3] object-cover" />
+            </Reveal>
           </div>
         </section>
 
         {/* Services */}
-        <section className="container-x py-14">
+        <Reveal as="section" className="container-x py-14">
           <SectionTitle eyebrow="SERVICES" title="Furnishing Services" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
@@ -141,18 +158,20 @@ function Home() {
               { title: "Single Room Makeover", price: "from KSh 50,000", icon: Wrench },
               { title: "Office Furnishing", price: "Custom quote", icon: ShieldCheck },
               { title: "Delivery & Installation", price: "Free over KSh 30,000", icon: Truck },
-            ].map(s => (
-              <div key={s.title} className="bg-card border border-border rounded-lg p-5 flex flex-col">
-                <s.icon className="size-8 text-terracotta" />
-                <h3 className="font-display font-bold text-lg mt-3">{s.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{s.price}</p>
-                <a href={whatsappUrl(`Hello, I'd like to enquire about: ${s.title}.`)} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center justify-center gap-2 bg-whatsapp text-white text-sm font-semibold py-2 rounded hover:bg-whatsapp/90">
-                  <MessageCircle className="size-4" /> Enquire
-                </a>
-              </div>
+            ].map((s, i) => (
+              <Reveal key={s.title} delay={i * 100} variant="fade-up">
+                <div className="bg-card border border-border rounded-lg p-5 flex flex-col h-full">
+                  <s.icon className="size-8 text-terracotta" />
+                  <h3 className="font-display font-bold text-lg mt-3">{s.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{s.price}</p>
+                  <a href={whatsappUrl(`Hello, I'd like to enquire about: ${s.title}.`)} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center justify-center gap-2 bg-whatsapp text-white text-sm font-semibold py-2 rounded hover:bg-whatsapp/90">
+                    <MessageCircle className="size-4" /> Enquire
+                  </a>
+                </div>
+              </Reveal>
             ))}
           </div>
-        </section>
+        </Reveal>
 
         {/* Trust strip */}
         <section className="bg-cream border-y border-border py-8">
@@ -170,7 +189,7 @@ function Home() {
         </section>
 
         {/* Newsletter */}
-        <section className="container-x py-14">
+        <Reveal as="section" variant="scale" className="container-x py-14">
           <div className="bg-gradient-to-br from-terracotta to-gold rounded-2xl p-8 sm:p-12 text-center text-cream">
             <h2 className="font-display text-2xl sm:text-3xl font-bold">Get 10% off your first order</h2>
             <p className="mt-2 text-cream/90 text-sm">Join our list for new arrivals, offers, and showroom news.</p>
@@ -179,7 +198,7 @@ function Home() {
               <button className="bg-espresso text-cream font-semibold px-5 rounded hover:bg-espresso/90">Subscribe</button>
             </form>
           </div>
-        </section>
+        </Reveal>
       </main>
 
       <Footer />
