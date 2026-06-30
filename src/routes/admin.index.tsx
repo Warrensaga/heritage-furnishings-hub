@@ -5,6 +5,7 @@ import { formatKES } from "@/lib/format";
 
 export const Route = createFileRoute("/admin/")({
   component: Dashboard,
+  head: () => ({ meta: [{ name: "robots", content: "noindex" }] }),
 });
 
 function Dashboard() {
