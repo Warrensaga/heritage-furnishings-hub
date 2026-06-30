@@ -20,7 +20,7 @@ export const adminSignUp = createServerFn({ method: "POST" })
     return { email, password: data.password, inviteCode: (data.inviteCode ?? "").trim() };
   })
   .handler(async ({ data }) => {
-    const expectedCode = process.env.ADMIN_INVITE_CODE ?? "";
+    const expectedCode = (process.env.ADMIN_INVITE_CODE ?? "").trim();
     const allowlist = (process.env.ADMIN_ALLOWED_EMAILS ?? "")
       .split(",")
       .map(s => s.trim().toLowerCase())
