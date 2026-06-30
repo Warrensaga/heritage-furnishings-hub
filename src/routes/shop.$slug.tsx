@@ -84,7 +84,12 @@ function ProductPage() {
             </div>
             <span className={`inline-block mt-3 text-xs font-bold px-2.5 py-1 rounded ${stockColor}`}>{stockLabel}</span>
 
-            {product.description && <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{product.description}</p>}
+            {product.description && (
+              <div className="mt-6 border-t border-border pt-5">
+                <h2 className="font-display text-lg font-bold text-espresso mb-2">Description</h2>
+                <p className="text-sm leading-relaxed text-foreground/80 whitespace-pre-line">{product.description}</p>
+              </div>
+            )}
 
             <div className="mt-6 flex items-center gap-3">
               <div className="inline-flex items-center border border-border rounded">
