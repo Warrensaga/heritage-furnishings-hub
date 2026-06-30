@@ -12,12 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DeliveryRouteImport } from './routes/delivery'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShopIndexRouteImport } from './routes/shop.index'
+import { Route as CheckoutIndexRouteImport } from './routes/checkout.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ShopSlugRouteImport } from './routes/shop.$slug'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
@@ -40,11 +40,6 @@ const DeliveryRoute = DeliveryRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CheckoutRoute = CheckoutRouteImport.update({
-  id: '/checkout',
-  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -70,6 +65,11 @@ const IndexRoute = IndexRouteImport.update({
 const ShopIndexRoute = ShopIndexRouteImport.update({
   id: '/shop/',
   path: '/shop/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutIndexRoute = CheckoutIndexRouteImport.update({
+  id: '/checkout/',
+  path: '/checkout/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -108,9 +108,9 @@ const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 const CheckoutSuccessIdRoute = CheckoutSuccessIdRouteImport.update({
-  id: '/success/$id',
-  path: '/success/$id',
-  getParentRoute: () => CheckoutRoute,
+  id: '/checkout/success/$id',
+  path: '/checkout/success/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -118,7 +118,6 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/cart': typeof CartRoute
-  '/checkout': typeof CheckoutRouteWithChildren
   '/contact': typeof ContactRoute
   '/delivery': typeof DeliveryRoute
   '/faq': typeof FaqRoute
@@ -129,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/admin/products': typeof AdminProductsRoute
   '/shop/$slug': typeof ShopSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/checkout/': typeof CheckoutIndexRoute
   '/shop/': typeof ShopIndexRoute
   '/checkout/success/$id': typeof CheckoutSuccessIdRoute
 }
@@ -136,7 +136,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cart': typeof CartRoute
-  '/checkout': typeof CheckoutRouteWithChildren
   '/contact': typeof ContactRoute
   '/delivery': typeof DeliveryRoute
   '/faq': typeof FaqRoute
@@ -147,6 +146,7 @@ export interface FileRoutesByTo {
   '/admin/products': typeof AdminProductsRoute
   '/shop/$slug': typeof ShopSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/checkout': typeof CheckoutIndexRoute
   '/shop': typeof ShopIndexRoute
   '/checkout/success/$id': typeof CheckoutSuccessIdRoute
 }
@@ -156,7 +156,6 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/cart': typeof CartRoute
-  '/checkout': typeof CheckoutRouteWithChildren
   '/contact': typeof ContactRoute
   '/delivery': typeof DeliveryRoute
   '/faq': typeof FaqRoute
@@ -167,6 +166,7 @@ export interface FileRoutesById {
   '/admin/products': typeof AdminProductsRoute
   '/shop/$slug': typeof ShopSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/checkout/': typeof CheckoutIndexRoute
   '/shop/': typeof ShopIndexRoute
   '/checkout/success/$id': typeof CheckoutSuccessIdRoute
 }
@@ -177,7 +177,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/cart'
-    | '/checkout'
     | '/contact'
     | '/delivery'
     | '/faq'
@@ -188,6 +187,7 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/shop/$slug'
     | '/admin/'
+    | '/checkout/'
     | '/shop/'
     | '/checkout/success/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -195,7 +195,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cart'
-    | '/checkout'
     | '/contact'
     | '/delivery'
     | '/faq'
@@ -206,6 +205,7 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/shop/$slug'
     | '/admin'
+    | '/checkout'
     | '/shop'
     | '/checkout/success/$id'
   id:
@@ -214,7 +214,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/cart'
-    | '/checkout'
     | '/contact'
     | '/delivery'
     | '/faq'
@@ -225,6 +224,7 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/shop/$slug'
     | '/admin/'
+    | '/checkout/'
     | '/shop/'
     | '/checkout/success/$id'
   fileRoutesById: FileRoutesById
@@ -234,12 +234,13 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   CartRoute: typeof CartRoute
-  CheckoutRoute: typeof CheckoutRouteWithChildren
   ContactRoute: typeof ContactRoute
   DeliveryRoute: typeof DeliveryRoute
   FaqRoute: typeof FaqRoute
   ShopSlugRoute: typeof ShopSlugRoute
+  CheckoutIndexRoute: typeof CheckoutIndexRoute
   ShopIndexRoute: typeof ShopIndexRoute
+  CheckoutSuccessIdRoute: typeof CheckoutSuccessIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -263,13 +264,6 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/checkout': {
-      id: '/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -305,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/shop'
       fullPath: '/shop/'
       preLoaderRoute: typeof ShopIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/': {
+      id: '/checkout/'
+      path: '/checkout'
+      fullPath: '/checkout/'
+      preLoaderRoute: typeof CheckoutIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -358,10 +359,10 @@ declare module '@tanstack/react-router' {
     }
     '/checkout/success/$id': {
       id: '/checkout/success/$id'
-      path: '/success/$id'
+      path: '/checkout/success/$id'
       fullPath: '/checkout/success/$id'
       preLoaderRoute: typeof CheckoutSuccessIdRouteImport
-      parentRoute: typeof CheckoutRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -386,40 +387,19 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
-interface CheckoutRouteChildren {
-  CheckoutSuccessIdRoute: typeof CheckoutSuccessIdRoute
-}
-
-const CheckoutRouteChildren: CheckoutRouteChildren = {
-  CheckoutSuccessIdRoute: CheckoutSuccessIdRoute,
-}
-
-const CheckoutRouteWithChildren = CheckoutRoute._addFileChildren(
-  CheckoutRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   CartRoute: CartRoute,
-  CheckoutRoute: CheckoutRouteWithChildren,
   ContactRoute: ContactRoute,
   DeliveryRoute: DeliveryRoute,
   FaqRoute: FaqRoute,
   ShopSlugRoute: ShopSlugRoute,
+  CheckoutIndexRoute: CheckoutIndexRoute,
   ShopIndexRoute: ShopIndexRoute,
+  CheckoutSuccessIdRoute: CheckoutSuccessIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
