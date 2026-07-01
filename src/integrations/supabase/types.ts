@@ -80,6 +80,71 @@ export type Database = {
         }
         Relationships: []
       }
+      product_variations: {
+        Row: {
+          attributes: Json
+          created_at: string
+          delivery_days: number | null
+          description: string | null
+          dimensions: Json | null
+          display_order: number
+          id: string
+          image_urls: string[]
+          is_default: boolean
+          original_price: number | null
+          price: number
+          product_id: string
+          sku: string
+          stock_status: string
+          updated_at: string
+          weight_kg: number | null
+        }
+        Insert: {
+          attributes?: Json
+          created_at?: string
+          delivery_days?: number | null
+          description?: string | null
+          dimensions?: Json | null
+          display_order?: number
+          id?: string
+          image_urls?: string[]
+          is_default?: boolean
+          original_price?: number | null
+          price: number
+          product_id: string
+          sku: string
+          stock_status?: string
+          updated_at?: string
+          weight_kg?: number | null
+        }
+        Update: {
+          attributes?: Json
+          created_at?: string
+          delivery_days?: number | null
+          description?: string | null
+          dimensions?: Json | null
+          display_order?: number
+          id?: string
+          image_urls?: string[]
+          is_default?: boolean
+          original_price?: number | null
+          price?: number
+          product_id?: string
+          sku?: string
+          stock_status?: string
+          updated_at?: string
+          weight_kg?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variations_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           badge: string | null
@@ -171,6 +236,68 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      variation_types: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      variation_values: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          slug: string
+          swatch_hex: string | null
+          value: string
+          variation_type_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          slug: string
+          swatch_hex?: string | null
+          value: string
+          variation_type_id: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          slug?: string
+          swatch_hex?: string | null
+          value?: string
+          variation_type_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "variation_values_variation_type_id_fkey"
+            columns: ["variation_type_id"]
+            isOneToOne: false
+            referencedRelation: "variation_types"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
