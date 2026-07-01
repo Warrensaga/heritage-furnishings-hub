@@ -119,9 +119,15 @@ function ProductsAdmin() {
               <L label="Image URLs (comma separated)" full><textarea rows={2} className="inp" value={(editing as any).image_urls} onChange={e => setEditing({ ...(editing as any), image_urls: e.target.value })} /></L>
               <L label="Description" full><textarea rows={4} className="inp" value={(editing as any).description ?? ""} onChange={e => setEditing({ ...(editing as any), description: e.target.value })} /></L>
             </div>
+            {(editing as any).id && (
+              <ProductVariationsPanel productId={(editing as any).id} productName={(editing as any).name} />
+            )}
+            {!(editing as any).id && (
+              <p className="mt-4 text-xs text-slate-500 border-t border-slate-200 pt-4">Save the product first to add variations.</p>
+            )}
             <div className="mt-5 flex justify-end gap-2">
-              <button onClick={() => setEditing(null)} className="px-4 py-2 border border-slate-300 rounded text-sm">Cancel</button>
-              <button onClick={save} className="px-4 py-2 bg-terracotta text-white rounded font-semibold text-sm">Save</button>
+              <button onClick={() => setEditing(null)} className="px-4 py-2 border border-slate-300 rounded text-sm">Close</button>
+              <button onClick={save} className="px-4 py-2 bg-terracotta text-white rounded font-semibold text-sm">Save Product</button>
             </div>
             <style>{`.inp{width:100%;border:1px solid rgb(203 213 225);border-radius:6px;padding:8px 10px;outline:none} .inp:focus{border-color:var(--terracotta)}`}</style>
           </div>
