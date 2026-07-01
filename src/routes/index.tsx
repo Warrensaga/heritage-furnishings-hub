@@ -149,7 +149,7 @@ function Home() {
               <Link to="/about" className="inline-block mt-6 text-gold font-semibold hover:underline">Read our story →</Link>
             </Reveal>
             <Reveal variant="slide-right" delay={150}>
-              <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=1200" alt="Workshop" className="rounded-lg aspect-[4/3] object-cover" />
+              <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=1200" alt="Workshop" loading="lazy" decoding="async" className="rounded-lg aspect-[4/3] object-cover" />
             </Reveal>
           </div>
         </section>
