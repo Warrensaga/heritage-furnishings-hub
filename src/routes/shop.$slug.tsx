@@ -113,7 +113,7 @@ const stockColors: Record<string, string> = {
 };
 
 function ProductPage() {
-  const { product, variations } = Route.useLoaderData();
+  const { product, variations } = Route.useLoaderData() as { product: any; variations: ProductVariation[] };
   const { data: categories = [] } = useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
   const { data: allProducts = [] } = useQuery({ queryKey: ["products"], queryFn: fetchProducts });
   const { data: types = [] } = useQuery({ queryKey: ["variation_types"], queryFn: fetchVariationTypes, enabled: variations.length > 0 });
@@ -229,7 +229,7 @@ function ProductPage() {
             </div>
             {images.length > 1 && (
               <div className="grid grid-cols-5 gap-2 mt-3">
-                {images.map((img, i) => (
+                {images.map((img: string, i: number) => (
                   <button key={img + i} onClick={() => setActiveImg(i)} className={`aspect-square rounded overflow-hidden border-2 transition-colors ${i === activeImg ? "border-terracotta" : "border-transparent"}`}>
                     <img src={img} alt="" className="size-full object-cover" />
                   </button>
