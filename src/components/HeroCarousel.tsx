@@ -39,7 +39,14 @@ export function HeroCarousel() {
             const category = params.get("category") ?? undefined;
             return (
               <div key={i} className="relative flex-[0_0_100%] min-h-[420px] sm:min-h-[520px] lg:min-h-[600px]">
-                <img src={s.image} alt={s.headline} className="absolute inset-0 size-full object-cover" />
+                <img
+                  src={s.image}
+                  alt={s.headline}
+                  {...(i === 0
+                    ? { loading: "eager" as const, fetchPriority: "high" as const }
+                    : { loading: "lazy" as const, fetchPriority: "low" as const, decoding: "async" as const })}
+                  className="absolute inset-0 size-full object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-r from-espresso/80 via-espresso/40 to-transparent" />
                 <div className="relative container-x h-full flex items-center min-h-[420px] sm:min-h-[520px] lg:min-h-[600px]">
                   <div className="max-w-xl text-cream py-10">
