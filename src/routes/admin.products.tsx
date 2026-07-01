@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchCategories, fetchProducts, type Product } from "@/lib/db";
 import { formatKES } from "@/lib/format";
 import { toast } from "sonner";
+import { ProductVariationsPanel } from "@/components/ProductVariationsPanel";
 
 export const Route = createFileRoute("/admin/products")({
   component: ProductsAdmin,
