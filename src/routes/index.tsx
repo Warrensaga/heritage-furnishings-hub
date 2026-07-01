@@ -21,7 +21,10 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Shop sofas, dining sets, beds, office & outdoor furniture. Free delivery in Nairobi over KSh 30,000." },
       { property: "og:url", content: "https://kenyan-furniture-suite.lovable.app/" },
     ],
-    links: [{ rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/" }],
+    links: [
+      { rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/" },
+      { rel: "preload", as: "image", href: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1800", fetchpriority: "high" } as any,
+    ],
   }),
   component: Home,
 });
@@ -55,7 +58,7 @@ function Home() {
             {categories.map((c, i) => (
               <Reveal key={c.id} delay={i * 60} variant="scale">
                 <Link to="/shop" search={{ category: c.slug } as any} className="group relative aspect-square rounded-lg overflow-hidden bg-muted block">
-                  <img src={c.icon_url ?? ""} alt={c.name} className="absolute inset-0 size-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={c.icon_url ?? ""} alt={c.name} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/30 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-3 text-cream">
                     <div className="font-display font-bold text-sm sm:text-base leading-tight">{c.name}</div>
@@ -149,7 +152,7 @@ function Home() {
               <Link to="/about" className="inline-block mt-6 text-gold font-semibold hover:underline">Read our story →</Link>
             </Reveal>
             <Reveal variant="slide-right" delay={150}>
-              <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=1200" alt="Workshop" className="rounded-lg aspect-[4/3] object-cover" />
+              <img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=1200" alt="Workshop" loading="lazy" decoding="async" className="rounded-lg aspect-[4/3] object-cover" />
             </Reveal>
           </div>
         </section>
