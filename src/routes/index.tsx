@@ -21,7 +21,10 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Shop sofas, dining sets, beds, office & outdoor furniture. Free delivery in Nairobi over KSh 30,000." },
       { property: "og:url", content: "https://kenyan-furniture-suite.lovable.app/" },
     ],
-    links: [{ rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/" }],
+    links: [
+      { rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/" },
+      { rel: "preload", as: "image", href: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1800", fetchpriority: "high" } as any,
+    ],
   }),
   component: Home,
 });
