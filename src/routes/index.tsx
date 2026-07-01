@@ -55,7 +55,7 @@ function Home() {
             {categories.map((c, i) => (
               <Reveal key={c.id} delay={i * 60} variant="scale">
                 <Link to="/shop" search={{ category: c.slug } as any} className="group relative aspect-square rounded-lg overflow-hidden bg-muted block">
-                  <img src={c.icon_url ?? ""} alt={c.name} className="absolute inset-0 size-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={c.icon_url ?? ""} alt={c.name} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/30 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-3 text-cream">
                     <div className="font-display font-bold text-sm sm:text-base leading-tight">{c.name}</div>
