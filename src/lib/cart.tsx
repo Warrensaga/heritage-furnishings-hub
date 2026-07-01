@@ -1,7 +1,11 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 export type CartItem = {
-  id: string;
+  id: string;              // unique cart key (product id or product:variation)
+  productId?: string;
+  variationId?: string;
+  variationLabel?: string; // e.g. "Size: 6 Seater, Wood Finish: Walnut"
+  sku?: string;
   slug: string;
   name: string;
   price: number;
