@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 
-const BASE_URL = "https://kenyan-furniture-suite.lovable.app";
+const BASE_URL = "https://mandelaheritage.co.ke";
 
 interface SitemapEntry {
   path: string;
@@ -18,6 +18,8 @@ export const Route = createFileRoute("/sitemap.xml")({
         const entries: SitemapEntry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/shop", changefreq: "daily", priority: "0.9" },
+          { path: "/categories", changefreq: "weekly", priority: "0.8" },
+          { path: "/projects", changefreq: "weekly", priority: "0.7" },
           { path: "/about", changefreq: "monthly", priority: "0.6" },
           { path: "/contact", changefreq: "monthly", priority: "0.6" },
           { path: "/delivery", changefreq: "monthly", priority: "0.5" },
@@ -25,9 +27,9 @@ export const Route = createFileRoute("/sitemap.xml")({
         ];
 
         try {
-          const { data: products } = await supabase
-            .from("products")
-            .select("slug, created_at");
+          const { data: categories } = await supabase.from("categories").select("slug");
+          if (categories) for (const c of categories) entries.push({ path: `/shop?category=${c.slug}`, changefreq: "weekly", priority: "0.7" });
+          const { data: products } = await supabase.from("products").select("slug, created_at");
           if (products) {
             for (const p of products) {
               entries.push({

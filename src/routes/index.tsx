@@ -35,8 +35,10 @@ function Home() {
   const { data: products = [] } = useQuery({ queryKey: ["products"], queryFn: fetchProducts });
   const counts = categoryCountMap(products);
   const featured = products.filter(p => p.featured);
-  const newest = products.slice(0, 4);
+  const newest = [...products].sort((a, b) => (b.created_at ?? "").localeCompare(a.created_at ?? "")).slice(0, 12);
   const onSale = products.filter(p => p.original_price);
+  const displayedCategories = categories.slice(0, 8);
+  const hasMoreCategories = categories.length > 8;
 
   const [tab, setTab] = useState<string>("all");
   const tabs = [{ key: "all", label: "All" }, ...categories.slice(0, 4).map(c => ({ key: c.slug, label: c.name.split(" ")[0] }))];
@@ -51,11 +53,11 @@ function Home() {
       <main className="flex-1">
         <HeroCarousel />
 
-        {/* Category grid */}
+        {/* Category grid — max 8 */}
         <Reveal as="section" className="container-x py-10 sm:py-14">
           <SectionTitle eyebrow="BROWSE" title="Shop by Category" />
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            {categories.map((c, i) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {displayedCategories.map((c, i) => (
               <Reveal key={c.id} delay={i * 60} variant="scale">
                 <Link to="/shop" search={{ category: c.slug } as any} className="group relative aspect-square rounded-lg overflow-hidden bg-muted block">
                   <img src={c.icon_url ?? ""} alt={c.name} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -68,11 +70,18 @@ function Home() {
               </Reveal>
             ))}
           </div>
+          {hasMoreCategories && (
+            <div className="mt-8 text-center">
+              <Link to="/categories" className="inline-block bg-espresso text-cream px-8 py-3 rounded font-semibold hover:bg-espresso/90 transition-colors">
+                Browse More Categories
+              </Link>
+            </div>
+          )}
         </Reveal>
 
-        {/* Featured */}
+        {/* Featured — cap 12 */}
         <Reveal as="section" className="container-x py-10 sm:py-14">
-          <SectionTitle eyebrow="HANDPICKED" title="Our Best Sellers" seeAll={{ to: "/shop" }} />
+          <SectionTitle eyebrow="HANDPICKED" title="Our Best Sellers" />
           <div className="flex flex-wrap gap-2 mb-5">
             {tabs.map(t => (
               <button key={t.key} onClick={() => setTab(t.key)} className={`px-4 py-1.5 rounded-full text-sm font-medium border ${tab === t.key ? "bg-espresso text-cream border-espresso" : "bg-card border-border hover:border-terracotta"}`}>
@@ -81,59 +90,56 @@ function Home() {
             ))}
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
-            {filteredFeatured.slice(0, 8).map((p, i) => (
+            {filteredFeatured.slice(0, 12).map((p, i) => (
               <Reveal key={p.id} delay={(i % 4) * 80}>
                 <ProductCard product={p} categoryName={catName(p.category_id)} />
               </Reveal>
             ))}
           </div>
+          {filteredFeatured.length > 12 && (
+            <div className="mt-8 text-center">
+              <Link to="/shop" className="inline-block bg-terracotta text-white px-8 py-3 rounded font-semibold hover:bg-terracotta/90">View More</Link>
+            </div>
+          )}
         </Reveal>
 
-        {/* New arrivals */}
+        {/* New arrivals — cap 12 */}
         <section className="bg-card border-y border-border py-10 sm:py-14">
           <Reveal className="container-x">
-            <SectionTitle eyebrow="JUST IN" title="New Arrivals" seeAll={{ to: "/shop" }} />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
+            <SectionTitle eyebrow="JUST IN" title="New Arrivals" />
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
               {newest.map((p, i) => (
-                <Reveal key={p.id} delay={i * 80} variant="fade-up">
+                <Reveal key={p.id} delay={i * 60} variant="fade-up">
                   <ProductCard product={p} categoryName={catName(p.category_id)} />
                 </Reveal>
               ))}
             </div>
+            {products.length > 12 && (
+              <div className="mt-8 text-center">
+                <Link to="/shop" className="inline-block bg-espresso text-cream px-8 py-3 rounded font-semibold hover:bg-espresso/90">View More</Link>
+              </div>
+            )}
           </Reveal>
         </section>
 
-        {/* Sale */}
+        {/* Sale — cap 12 */}
         {onSale.length > 0 && (
           <Reveal as="section" className="container-x py-10 sm:py-14">
-            <SectionTitle eyebrow="SAVE BIG" title="Special Offers" seeAll={{ to: "/shop" }} />
+            <SectionTitle eyebrow="SAVE BIG" title="Special Offers" />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
-              {onSale.slice(0, 4).map((p, i) => (
-                <Reveal key={p.id} delay={i * 80}>
+              {onSale.slice(0, 12).map((p, i) => (
+                <Reveal key={p.id} delay={(i % 4) * 60}>
                   <ProductCard product={p} categoryName={catName(p.category_id)} />
                 </Reveal>
               ))}
             </div>
+            {onSale.length > 12 && (
+              <div className="mt-8 text-center">
+                <Link to="/shop" className="inline-block bg-terracotta text-white px-8 py-3 rounded font-semibold hover:bg-terracotta/90">View More Offers</Link>
+              </div>
+            )}
           </Reveal>
         )}
-
-        {/* Per-category rows */}
-        {categories.slice(0, 4).map(c => {
-          const list = products.filter(p => p.category_id === c.id);
-          if (!list.length) return null;
-          return (
-            <section key={c.id} className="container-x py-8">
-              <SectionTitle title={c.name} seeAll={{ to: "/shop", search: { category: c.slug } }} />
-              <div className="flex gap-3 sm:gap-5 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 pb-2">
-                {list.map(p => (
-                  <div key={p.id} className="w-44 sm:w-56 shrink-0">
-                    <ProductCard product={p} categoryName={c.name} />
-                  </div>
-                ))}
-              </div>
-            </section>
-          );
-        })}
 
         {/* Brand story */}
         <section className="bg-espresso text-cream py-14">

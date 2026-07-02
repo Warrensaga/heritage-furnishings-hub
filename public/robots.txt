@@ -1,7 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /admin/
 Disallow: /cart
 Disallow: /checkout
+Disallow: /auth
 
-Sitemap: https://kenyan-furniture-suite.lovable.app/sitemap.xml
+Sitemap: https://mandelaheritage.co.ke/sitemap.xml
