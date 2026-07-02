@@ -1,33 +1,41 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, MessageCircle, Mail, MapPin } from "lucide-react";
 import { BUSINESS_ADDRESS, BUSINESS_EMAIL, WHATSAPP_NUMBER, whatsappUrl } from "@/lib/format";
+import { SOCIAL_LINKS } from "@/lib/social";
+import { TikTokIcon } from "@/components/TikTokIcon";
+import logoAsset from "@/assets/mandela-logo.png.asset.json";
 
 export function Footer() {
   return (
     <footer className="bg-espresso text-cream/90 mt-16">
       <div className="container-x py-12 grid gap-10 md:grid-cols-4">
         <div>
-          <div className="font-display text-2xl font-bold text-cream">MANDELA HERITAGE</div>
-          <div className="text-xs tracking-[0.3em] text-gold mt-1">FURNITURES</div>
+          <div className="flex items-center gap-3">
+            <img src={logoAsset.url} alt="Mandela Heritage Furnitures logo" width={48} height={48} loading="lazy" className="size-12 rounded-full object-cover" />
+            <div>
+              <div className="font-display text-lg font-bold text-cream leading-tight">MANDELA HERITAGE</div>
+              <div className="text-[10px] tracking-[0.3em] text-gold">FURNITURES</div>
+            </div>
+          </div>
           <p className="mt-4 text-sm text-cream/70 leading-relaxed">
             Premium handcrafted furniture from our showroom on the Eastern Bypass — built to last, priced for Kenyans.
           </p>
           <div className="flex gap-3 mt-5">
-            <a href={whatsappUrl("Hello!")} target="_blank" rel="noreferrer" className="size-9 rounded-full bg-cream/10 hover:bg-cream/20 grid place-items-center"><MessageCircle className="size-4" /></a>
-            <a href="#" className="size-9 rounded-full bg-cream/10 hover:bg-cream/20 grid place-items-center"><Facebook className="size-4" /></a>
-            <a href="#" className="size-9 rounded-full bg-cream/10 hover:bg-cream/20 grid place-items-center"><Instagram className="size-4" /></a>
+            <a href={whatsappUrl("Hello!")} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="size-9 rounded-full bg-cream/10 hover:bg-cream/20 grid place-items-center"><MessageCircle className="size-4" /></a>
+            <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="size-9 rounded-full bg-cream/10 hover:bg-cream/20 grid place-items-center"><Facebook className="size-4" /></a>
+            <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="size-9 rounded-full bg-cream/10 hover:bg-cream/20 grid place-items-center"><Instagram className="size-4" /></a>
+            <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="size-9 rounded-full bg-cream/10 hover:bg-cream/20 grid place-items-center"><TikTokIcon className="size-4" /></a>
           </div>
         </div>
 
         <div>
-          <div className="font-display text-sm font-bold uppercase tracking-wider text-gold mb-4">Shop</div>
+          <div className="font-display text-sm font-bold uppercase tracking-wider text-gold mb-4">Explore</div>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/shop" search={{ category: "sofas-seating" } as any} className="hover:text-gold">Sofas & Seating</Link></li>
-            <li><Link to="/shop" search={{ category: "dining-sets" } as any} className="hover:text-gold">Dining Sets</Link></li>
-            <li><Link to="/shop" search={{ category: "bedroom-furniture" } as any} className="hover:text-gold">Bedroom</Link></li>
-            <li><Link to="/shop" search={{ category: "office-furniture" } as any} className="hover:text-gold">Office</Link></li>
-            <li><Link to="/shop" search={{ category: "outdoor-furniture" } as any} className="hover:text-gold">Outdoor</Link></li>
-            <li><Link to="/shop" className="hover:text-gold">All Products</Link></li>
+            <li><Link to="/" className="hover:text-gold">Home</Link></li>
+            <li><Link to="/shop" className="hover:text-gold">Shop</Link></li>
+            <li><Link to="/categories" className="hover:text-gold">Categories</Link></li>
+            <li><Link to="/projects" className="hover:text-gold">Projects</Link></li>
+            <li><Link to="/contact" className="hover:text-gold">Contact Us</Link></li>
           </ul>
         </div>
 
@@ -35,7 +43,6 @@ export function Footer() {
           <div className="font-display text-sm font-bold uppercase tracking-wider text-gold mb-4">Company</div>
           <ul className="space-y-2 text-sm">
             <li><Link to="/about" className="hover:text-gold">About Us</Link></li>
-            <li><Link to="/contact" className="hover:text-gold">Contact</Link></li>
             <li><Link to="/faq" className="hover:text-gold">FAQ</Link></li>
             <li><Link to="/delivery" className="hover:text-gold">Delivery Info</Link></li>
           </ul>
