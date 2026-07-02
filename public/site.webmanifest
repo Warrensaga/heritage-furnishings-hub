@@ -1,0 +1,13 @@
+{
+  "name": "Mandela Heritage Furnitures",
+  "short_name": "Mandela Heritage",
+  "description": "Premium handcrafted furniture in Nairobi.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f1ea",
+  "theme_color": "#3b2a1a",
+  "icons": [
+    { "src": "/__l5e/assets-v1/e60591ec-9abe-49da-aa23-6c30bab49057/mandela-logo.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/__l5e/assets-v1/e60591ec-9abe-49da-aa23-6c30bab49057/mandela-logo.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

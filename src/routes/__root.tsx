@@ -14,6 +14,8 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
+import logoAsset from "@/assets/mandela-logo.png.asset.json";
+import { SITE_URL } from "@/lib/social";
 
 function NotFoundComponent() {
   return (
@@ -62,9 +64,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Mandela Heritage Furnitures" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#3b2a1a" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: logoAsset.url },
+      { rel: "apple-touch-icon", href: logoAsset.url },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "preconnect", href: "https://images.unsplash.com" },
@@ -77,8 +83,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "FurnitureStore",
           name: "Mandela Heritage Furnitures",
-          url: "https://kenyan-furniture-suite.lovable.app",
+          url: SITE_URL,
+          logo: logoAsset.url,
+          image: logoAsset.url,
           description: "Premium handcrafted furniture showroom on Eastern Bypass, Nairobi.",
+          telephone: "+254701333358",
           address: {
             "@type": "PostalAddress",
             streetAddress: "Eastern Bypass, Mihango",
@@ -86,10 +95,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             addressCountry: "KE",
           },
           openingHours: ["Mo-Sa 08:00-18:00", "Su 10:00-16:00"],
+          sameAs: [
+            "https://www.instagram.com/mandela_heritagefurniture/",
+            "https://www.facebook.com/profile.php?id=100071032794768",
+            "https://www.tiktok.com/@mandela_h_furnitures",
+          ],
         }),
       },
     ],
-
   }),
   shellComponent: RootShell,
   component: RootComponent,
