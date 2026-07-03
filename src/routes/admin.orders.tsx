@@ -36,6 +36,14 @@ function OrdersAdmin() {
     if (error) { toast.error(error.message); return; }
     toast.success("Notes saved");
   };
+  const removeOrder = async (id: string) => {
+    if (!confirm("Permanently delete this order? This cannot be undone.")) return;
+    const { error } = await supabase.from("orders").delete().eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Order deleted");
+    setExpanded(null);
+    qc.invalidateQueries({ queryKey: ["admin-orders"] });
+  };
 
   return (
     <div>
