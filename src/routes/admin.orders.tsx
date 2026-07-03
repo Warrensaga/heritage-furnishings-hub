@@ -60,7 +60,7 @@ function OrdersAdmin() {
           const isOpen = expanded === o.id;
           return (
             <div key={o.id} className="bg-white border border-slate-200 rounded-lg">
-              <button onClick={() => setExpanded(isOpen ? null : o.id)} className="w-full px-4 py-3 flex items-center gap-3 text-left">
+              <div onClick={() => setExpanded(isOpen ? null : o.id)} className="w-full px-4 py-3 flex items-center gap-3 text-left cursor-pointer select-none">
                 {isOpen ? <ChevronDown className="size-4" /> : <ChevronRight className="size-4" />}
                 <div className="font-mono text-xs">#{o.id.slice(0, 8).toUpperCase()}</div>
                 <div className="flex-1 truncate font-medium">{o.customer_name}</div>
@@ -77,7 +77,7 @@ function OrdersAdmin() {
                 >
                   <Trash2 className="size-4" />
                 </button>
-              </button>
+              </div>
               {isOpen && (
                 <div className="border-t border-slate-200 p-4 grid md:grid-cols-2 gap-4 text-sm">
                   <div>
