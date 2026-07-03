@@ -45,11 +45,16 @@ function ContentAdmin() {
   useEffect(() => { if (typeof bannerActive === "boolean") setActive(bannerActive); }, [bannerActive]);
   useEffect(() => { if (Array.isArray(featuredIds)) setFeat(featuredIds); }, [featuredIds]);
   useEffect(() => { if (Array.isArray(testimonialsData)) setTestimonials(testimonialsData); }, [testimonialsData]);
-  PAGE_KEYS.forEach((p, i) => {
-    const val = pageQueries[i].data;
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => { if (typeof val === "string") setPages(prev => ({ ...prev, [p.key]: val })); }, [val]);
-  });
+  const pageDataSig = pageQueries.map(q => (typeof q.data === "string" ? q.data : "")).join("\u0001");
+  useEffect(() => {
+    const next: Record<string, string> = {};
+    PAGE_KEYS.forEach((p, i) => {
+      const v = pageQueries[i].data;
+      if (typeof v === "string") next[p.key] = v;
+    });
+    setPages(prev => ({ ...prev, ...next }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageDataSig]);
 
   const upsert = async (key: string, value: any) => {
     const { error } = await supabase.from("site_content").upsert({ key, value, updated_at: new Date().toISOString() });
