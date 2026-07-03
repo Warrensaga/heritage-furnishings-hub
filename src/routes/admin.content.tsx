@@ -130,6 +130,45 @@ function ContentAdmin() {
           ))}
         </div>
       </section>
+
+      <section className="mt-6 bg-white border border-slate-200 rounded-lg p-5">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="font-display font-bold text-lg">Testimonials</h2>
+            <p className="text-xs text-slate-500 mt-1">Shown on the homepage. Leave empty to fall back to defaults.</p>
+          </div>
+          <button onClick={addT} className="text-sm font-semibold text-terracotta inline-flex items-center gap-1"><Plus className="size-4" /> Add</button>
+        </div>
+        <div className="mt-4 space-y-4">
+          {testimonials.length === 0 && <div className="text-sm text-slate-500">No testimonials yet.</div>}
+          {testimonials.map((t, i) => (
+            <div key={i} className="border border-slate-200 rounded p-4 grid sm:grid-cols-2 gap-3 text-sm">
+              <input className="inp" placeholder="Full name" value={t.name} onChange={e => updateT(i, { name: e.target.value })} />
+              <input className="inp" placeholder="Role / Location" value={t.role} onChange={e => updateT(i, { role: e.target.value })} />
+              <textarea rows={3} className="inp sm:col-span-2" placeholder="Quote" value={t.quote} onChange={e => updateT(i, { quote: e.target.value })} />
+              <button onClick={() => removeT(i)} className="text-red-600 text-xs inline-flex items-center gap-1 sm:col-span-2"><Trash2 className="size-3.5" /> Remove testimonial</button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-6 bg-white border border-slate-200 rounded-lg p-5">
+        <h2 className="font-display font-bold text-lg">Page Copy</h2>
+        <p className="text-xs text-slate-500 mt-1">Edit the text shown on About, Contact, Delivery, FAQ, Projects intro and the footer.</p>
+        <div className="mt-4 grid gap-4">
+          {PAGE_KEYS.map(p => (
+            <label key={p.key} className="block">
+              <div className="text-xs font-semibold text-slate-700 mb-1">{p.label}</div>
+              <textarea
+                rows={p.rows}
+                className="inp"
+                value={pages[p.key] ?? ""}
+                onChange={e => setPages(prev => ({ ...prev, [p.key]: e.target.value }))}
+              />
+            </label>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
