@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ChevronDown, ChevronRight, MessageCircle } from "lucide-react";
+import { ChevronDown, ChevronRight, MessageCircle, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatKES, whatsappUrl } from "@/lib/format";
 import { toast } from "sonner";
@@ -36,6 +36,14 @@ function OrdersAdmin() {
     if (error) { toast.error(error.message); return; }
     toast.success("Notes saved");
   };
+  const removeOrder = async (id: string) => {
+    if (!confirm("Permanently delete this order? This cannot be undone.")) return;
+    const { error } = await supabase.from("orders").delete().eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Order deleted");
+    setExpanded(null);
+    qc.invalidateQueries({ queryKey: ["admin-orders"] });
+  };
 
   return (
     <div>
@@ -52,7 +60,7 @@ function OrdersAdmin() {
           const isOpen = expanded === o.id;
           return (
             <div key={o.id} className="bg-white border border-slate-200 rounded-lg">
-              <button onClick={() => setExpanded(isOpen ? null : o.id)} className="w-full px-4 py-3 flex items-center gap-3 text-left">
+              <div onClick={() => setExpanded(isOpen ? null : o.id)} className="w-full px-4 py-3 flex items-center gap-3 text-left cursor-pointer select-none">
                 {isOpen ? <ChevronDown className="size-4" /> : <ChevronRight className="size-4" />}
                 <div className="font-mono text-xs">#{o.id.slice(0, 8).toUpperCase()}</div>
                 <div className="flex-1 truncate font-medium">{o.customer_name}</div>
@@ -61,7 +69,15 @@ function OrdersAdmin() {
                 <select value={o.status} onClick={e => e.stopPropagation()} onChange={e => updateStatus(o.id, e.target.value)} className="text-xs border border-slate-300 rounded px-2 py-1">
                   {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
-              </button>
+                <button
+                  onClick={e => { e.stopPropagation(); removeOrder(o.id); }}
+                  className="p-1.5 hover:bg-red-50 text-red-600 rounded"
+                  aria-label="Delete order"
+                  title="Delete order"
+                >
+                  <Trash2 className="size-4" />
+                </button>
+              </div>
               {isOpen && (
                 <div className="border-t border-slate-200 p-4 grid md:grid-cols-2 gap-4 text-sm">
                   <div>

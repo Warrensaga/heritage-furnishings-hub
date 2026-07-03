@@ -76,7 +76,7 @@ export function Header() {
           </div>
         </form>
 
-        <nav className="hidden lg:flex items-center gap-8 h-11 text-sm">
+        <nav className="hidden lg:flex justify-center items-center gap-8 h-11 text-sm">
           <Link to="/" className={navLink} activeOptions={{ exact: true }} activeProps={{ className: "text-terracotta" }}>Home</Link>
           <Link to="/shop" className={navLink} activeProps={{ className: "text-terracotta" }}>Shop</Link>
 
@@ -91,7 +91,7 @@ export function Header() {
               Categories <ChevronDown className={`size-3.5 transition-transform ${catOpen ? "rotate-180" : ""}`} />
             </button>
             {catOpen && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-card border border-border rounded-md shadow-lg py-2 max-h-[70vh] overflow-y-auto z-50">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-64 bg-card border border-border rounded-md shadow-lg py-2 max-h-[70vh] overflow-y-auto z-50">
                 {categories.length === 0 && (
                   <div className="px-4 py-2 text-sm text-muted-foreground">No categories yet</div>
                 )}

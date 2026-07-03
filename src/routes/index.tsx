@@ -202,15 +202,33 @@ function Home() {
           </div>
         </section>
 
-        {/* Newsletter */}
-        <Reveal as="section" variant="scale" className="container-x py-14">
-          <div className="bg-gradient-to-br from-terracotta to-gold rounded-2xl p-8 sm:p-12 text-center text-cream">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold">Get 10% off your first order</h2>
-            <p className="mt-2 text-cream/90 text-sm">Join our list for new arrivals, offers, and showroom news.</p>
-            <form className="mt-6 max-w-md mx-auto flex gap-2" onSubmit={e => { e.preventDefault(); }}>
-              <input type="email" required placeholder="you@email.com" className="flex-1 px-4 py-3 rounded text-espresso outline-none bg-cream" />
-              <button className="bg-espresso text-cream font-semibold px-5 rounded hover:bg-espresso/90">Subscribe</button>
-            </form>
+        {/* Testimonials */}
+        <Reveal as="section" variant="fade-up" className="container-x py-14">
+          <SectionTitle eyebrow="REVIEWS" title="What Our Customers Say" />
+          <div className="grid md:grid-cols-3 gap-5">
+            {[
+              { name: "Nduiyie Wanjiku", role: "Karen, Nairobi", quote: "The sofa is exactly what I hoped for — solid frame, beautiful stitching and delivery was on time. My living room finally feels like home." },
+              { name: "Nancy M.", role: "Kileleshwa", quote: "Ordering was so simple via WhatsApp. The team was patient with my questions and installed everything neatly. Highly recommended." },
+              { name: "Leah Wanjiru", role: "Syokimau", quote: "Beautiful craftsmanship at a fair price. My dining set draws compliments from every visitor. I'll definitely be back for the bedroom." },
+            ].map((t, i) => (
+              <Reveal key={t.name} delay={i * 100} variant="scale">
+                <figure className="h-full bg-card border border-border rounded-2xl p-6 flex flex-col shadow-sm hover:shadow-md transition-shadow">
+                  <div className="text-gold text-lg tracking-widest" aria-hidden>★★★★★</div>
+                  <blockquote className="mt-3 text-espresso/85 leading-relaxed text-sm flex-1">
+                    “{t.quote}”
+                  </blockquote>
+                  <figcaption className="mt-5 flex items-center gap-3 border-t border-border pt-4">
+                    <div className="size-10 rounded-full bg-terracotta text-cream grid place-items-center font-display font-bold">
+                      {t.name.split(" ").map(n => n[0]).slice(0, 2).join("")}
+                    </div>
+                    <div>
+                      <div className="font-display font-bold text-espresso leading-tight">{t.name}</div>
+                      <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{t.role}</div>
+                    </div>
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
           </div>
         </Reveal>
       </main>

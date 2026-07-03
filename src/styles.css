@@ -45,12 +45,12 @@
 :root {
   --radius: 0.5rem;
 
-  /* brand */
-  --terracotta: oklch(0.62 0.14 40);   /* #C4622D */
-  --gold: oklch(0.78 0.14 80);          /* #E8A838 */
-  --forest: oklch(0.45 0.08 155);       /* #2D6A4F */
-  --espresso: oklch(0.18 0.025 40);     /* #1C0F0A */
-  --cream: oklch(0.97 0.015 80);        /* #FDF6EE */
+  /* brand — Mandela Heritage logo palette: deep navy + warm tan + cream */
+  --terracotta: oklch(0.34 0.08 250);   /* deep navy (primary) — replaces terracotta */
+  --gold: oklch(0.68 0.09 65);           /* warm tan/brown script accent */
+  --forest: oklch(0.44 0.07 250);        /* mid navy */
+  --espresso: oklch(0.19 0.04 250);      /* near-black navy */
+  --cream: oklch(0.98 0.012 85);         /* warm cream */
   --whatsapp: oklch(0.68 0.16 150);
 
   --background: var(--cream);
