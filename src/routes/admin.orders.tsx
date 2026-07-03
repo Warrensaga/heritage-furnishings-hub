@@ -69,6 +69,14 @@ function OrdersAdmin() {
                 <select value={o.status} onClick={e => e.stopPropagation()} onChange={e => updateStatus(o.id, e.target.value)} className="text-xs border border-slate-300 rounded px-2 py-1">
                   {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
+                <button
+                  onClick={e => { e.stopPropagation(); removeOrder(o.id); }}
+                  className="p-1.5 hover:bg-red-50 text-red-600 rounded"
+                  aria-label="Delete order"
+                  title="Delete order"
+                >
+                  <Trash2 className="size-4" />
+                </button>
               </button>
               {isOpen && (
                 <div className="border-t border-slate-200 p-4 grid md:grid-cols-2 gap-4 text-sm">
