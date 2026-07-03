@@ -9,6 +9,16 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/admin/content")({ component: ContentAdmin, head: () => ({ meta: [{ name: "robots", content: "noindex" }] }) });
 
 type Slide = { category: string; headline: string; subtext: string; image: string; cta_link: string };
+type Testimonial = { name: string; role: string; quote: string };
+
+const PAGE_KEYS = [
+  { key: "page_about", label: "About page copy", rows: 8 },
+  { key: "page_contact", label: "Contact page copy", rows: 6 },
+  { key: "page_delivery", label: "Delivery page copy", rows: 6 },
+  { key: "page_faq", label: "FAQ page copy", rows: 8 },
+  { key: "page_projects_intro", label: "Projects page intro", rows: 4 },
+  { key: "footer_tagline", label: "Footer tagline", rows: 2 },
+] as const;
 
 function ContentAdmin() {
   const qc = useQueryClient();
@@ -16,18 +26,30 @@ function ContentAdmin() {
   const { data: bannerText } = useQuery({ queryKey: ["promo_banner_text"], queryFn: () => fetchSiteContent("promo_banner_text") });
   const { data: bannerActive } = useQuery({ queryKey: ["promo_banner_active"], queryFn: () => fetchSiteContent("promo_banner_active") });
   const { data: featuredIds } = useQuery({ queryKey: ["featured_product_ids"], queryFn: () => fetchSiteContent("featured_product_ids") });
+  const { data: testimonialsData } = useQuery({ queryKey: ["testimonials"], queryFn: () => fetchSiteContent("testimonials") });
+  const pageQueries = PAGE_KEYS.map(p =>
+    useQuery({ queryKey: [p.key], queryFn: () => fetchSiteContent(p.key) })
+  );
   const { data: products = [] } = useQuery({ queryKey: ["products"], queryFn: fetchProducts });
 
   const [slides, setSlides] = useState<Slide[]>([]);
   const [banner, setBanner] = useState("");
   const [active, setActive] = useState(true);
   const [feat, setFeat] = useState<string[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [pages, setPages] = useState<Record<string, string>>({});
   const [search, setSearch] = useState("");
 
   useEffect(() => { if (Array.isArray(slidesData)) setSlides(slidesData); }, [slidesData]);
   useEffect(() => { if (typeof bannerText === "string") setBanner(bannerText); }, [bannerText]);
   useEffect(() => { if (typeof bannerActive === "boolean") setActive(bannerActive); }, [bannerActive]);
   useEffect(() => { if (Array.isArray(featuredIds)) setFeat(featuredIds); }, [featuredIds]);
+  useEffect(() => { if (Array.isArray(testimonialsData)) setTestimonials(testimonialsData); }, [testimonialsData]);
+  PAGE_KEYS.forEach((p, i) => {
+    const val = pageQueries[i].data;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => { if (typeof val === "string") setPages(prev => ({ ...prev, [p.key]: val })); }, [val]);
+  });
 
   const upsert = async (key: string, value: any) => {
     const { error } = await supabase.from("site_content").upsert({ key, value, updated_at: new Date().toISOString() });
@@ -41,6 +63,8 @@ function ContentAdmin() {
         upsert("promo_banner_text", banner),
         upsert("promo_banner_active", active),
         upsert("featured_product_ids", feat),
+        upsert("testimonials", testimonials),
+        ...PAGE_KEYS.map(p => upsert(p.key, pages[p.key] ?? "")),
       ]);
       toast.success("Saved");
       qc.invalidateQueries();
@@ -49,7 +73,11 @@ function ContentAdmin() {
 
   const updateSlide = (i: number, patch: Partial<Slide>) => setSlides(s => s.map((sl, idx) => idx === i ? { ...sl, ...patch } : sl));
   const addSlide = () => setSlides(s => [...s, { category: "NEW CATEGORY", headline: "", subtext: "", image: "", cta_link: "/shop" }]);
-  const removeSlide = (i: number) => setSlides(s => s.filter((_, idx) => idx !== i));
+  const removeSlide = (i: number) => { if (!confirm("Remove this slide?")) return; setSlides(s => s.filter((_, idx) => idx !== i)); };
+
+  const updateT = (i: number, patch: Partial<Testimonial>) => setTestimonials(s => s.map((t, idx) => idx === i ? { ...t, ...patch } : t));
+  const addT = () => setTestimonials(s => [...s, { name: "", role: "", quote: "" }]);
+  const removeT = (i: number) => { if (!confirm("Remove this testimonial?")) return; setTestimonials(s => s.filter((_, idx) => idx !== i)); };
 
   return (
     <div>
