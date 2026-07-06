@@ -236,6 +236,35 @@ function ProductPage() {
                 ))}
               </div>
             )}
+
+            {hasVariations && variations.some(v => v.image_urls?.length) && (
+              <div className="mt-5">
+                <div className="text-xs font-semibold uppercase tracking-wider text-espresso mb-2">
+                  Choose a variation
+                </div>
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {variations.filter(v => v.image_urls?.length).map(v => {
+                    const active = currentVariation?.id === v.id;
+                    const label = Object.values(v.attributes ?? {}).join(" / ");
+                    return (
+                      <button
+                        key={v.id}
+                        onClick={() => { setSelectedAttrs(v.attributes ?? {}); setActiveImg(0); }}
+                        className={`group text-left rounded-lg overflow-hidden border-2 transition-all ${active ? "border-terracotta shadow-md" : "border-border hover:border-espresso"}`}
+                      >
+                        <div className="aspect-square bg-muted overflow-hidden">
+                          <img src={v.image_urls[0]} alt={label} className="size-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        </div>
+                        <div className="px-2 py-1.5">
+                          <div className="text-[11px] font-semibold truncate">{label || v.sku}</div>
+                          <div className="text-[11px] text-terracotta font-bold">{formatKES(v.price)}</div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           <div>
