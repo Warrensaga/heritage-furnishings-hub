@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "https://kenyan-furniture-suite.lovable.app/" },
-      { rel: "preload", as: "image", href: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1800", fetchpriority: "high" } as any,
+      { rel: "preload", as: "image", href: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1800", fetchPriority: "high" } as any,
     ],
   }),
   component: Home,
